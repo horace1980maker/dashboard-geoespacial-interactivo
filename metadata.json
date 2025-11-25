@@ -1,0 +1,6 @@
+{
+  "name": "Interactive Geospatial Dashboard",
+  "description": "An interactive dashboard that integrates maps with data visualization for key countries. Select different data layers to view on the map and in charts, and use AI to generate a socio-economic analysis for a selected country.",
+  "requestFramePermissions": [],
+  "prompt": ""
+}

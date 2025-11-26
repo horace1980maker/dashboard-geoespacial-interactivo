@@ -18,12 +18,12 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ country, dataset, analysis
     const { t } = useLanguage();
     const dataValue = country.data[dataset.id];
 
-    const buttonText = isLoading 
+    const buttonText = isLoading
         ? t('thinking')
         : t('generateAnalysis');
 
     return (
-        <div className="absolute top-4 right-4 w-96 max-h-[calc(100%-2rem)] bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col animate-slide-in-right">
+        <div className="absolute top-4 right-4 w-96 max-h-[calc(100%-2rem)] bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col animate-slide-in-right z-[1000]">
             {/* Header */}
             <header className="flex justify-between items-center p-3 bg-slate-50 border-b border-slate-200 flex-shrink-0">
                 <h3 className="text-xl font-bold text-brand-accent">{country.name}</h3>
@@ -31,7 +31,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ country, dataset, analysis
                     <CloseIcon className="w-5 h-5" />
                 </button>
             </header>
-            
+
             {/* Content */}
             <div className="p-4 space-y-4 overflow-y-auto">
                 {/* Data Value */}
@@ -42,10 +42,10 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ country, dataset, analysis
                         <span className="text-lg font-normal text-slate-500 ml-2">{dataset.unit}</span>
                     </p>
                 </div>
-                
+
                 {/* AI Interaction */}
                 <div className="space-y-3">
-                     <button
+                    <button
                         onClick={onAnalyze}
                         disabled={isLoading}
                         className="w-full flex items-center justify-center px-4 py-2 bg-gradient-to-r from-brand-accent to-brand-base text-white font-semibold rounded-full hover:from-brand-accent hover:to-brand-base/90 transition-all duration-200 disabled:bg-slate-300 disabled:cursor-not-allowed shadow-md"
@@ -54,10 +54,10 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ country, dataset, analysis
                         {buttonText}
                     </button>
                 </div>
-                
+
                 {/* Result Area */}
                 <div className="h-48 bg-slate-50 rounded-md p-3 overflow-y-auto text-sm">
-                     {isLoading && (
+                    {isLoading && (
                         <div className="flex flex-col items-center justify-center h-full text-slate-500">
                             <LoadingSpinner className="w-8 h-8 text-brand-base" />
                             <p className="mt-3">{t('generatingResponse')}</p>
@@ -65,7 +65,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ country, dataset, analysis
                     )}
                     {analysisError && !isLoading && (
                         <div className="flex flex-col items-center justify-center h-full text-red-500 text-center">
-                            <WarningIcon className="w-10 h-10 mb-2"/>
+                            <WarningIcon className="w-10 h-10 mb-2" />
                             <p className="font-bold">{t('errorTitle')}</p>
                             <p className="text-xs mt-1">{analysisError}</p>
                         </div>
@@ -80,7 +80,7 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ country, dataset, analysis
                     )}
                 </div>
             </div>
-             <style>{`
+            <style>{`
                 @keyframes slide-in-right {
                     from { opacity: 0; transform: translateX(20px); }
                     to { opacity: 1; transform: translateX(0); }

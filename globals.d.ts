@@ -2,69 +2,9 @@
 // For a full-featured app, you would use @types/google.maps.
 
 declare global {
-    namespace google {
-        namespace maps {
-            type MapTypeStyle = any;
-            
-            class LatLng {
-              constructor(lat: number, lng: number);
-            }
-            
-            class Point {
-                constructor(x: number, y: number);
-            }
+    // Google Maps types removed
 
-            interface MapsEventListener {
-                remove(): void;
-            }
-
-            class Map {
-                constructor(el: HTMLElement | null, opts?: any);
-                addListener(event: string, callback: (...args: any[]) => void): MapsEventListener;
-                set(key: string, value: any): void;
-                get(key: string): any;
-            }
-
-            class Data {
-                constructor(options?: any);
-                loadGeoJson(url: string, options?: any, callback?: (features: Data.Feature[]) => void): void;
-                addGeoJson(geoJson: any, options?: any): Data.Feature[];
-                setStyle(style: any): void;
-                setMap(map: Map | null): void;
-                addListener(event: string, callback: (e: Data.MouseEvent) => void): MapsEventListener;
-                revertStyle(feature?: Data.Feature): void;
-                overrideStyle(feature: Data.Feature, style: any): void;
-            }
-            
-            namespace Data {
-                class Feature {
-                    forEachProperty(callback: (value: any, name: string) => void): void;
-                }
-                interface MouseEvent {
-                    feature: Feature;
-                }
-            }
-
-            namespace marker {
-                class AdvancedMarkerElement {
-                    constructor(options: any);
-                    map: Map | null;
-                    addListener(event: string, callback: (...args: any[]) => void): MapsEventListener;
-                }
-            }
-
-            interface MapMouseEvent {
-                placeId?: string;
-            }
-            
-            interface IconMouseEvent extends MapMouseEvent {}
-
-            namespace event {
-                function clearInstanceListeners(instance: any): void;
-                function removeListener(listener: MapsEventListener): void;
-            }
-        }
-    }
+    declare module "*.png";
 
     namespace GeoJSON {
         // Bounding box
@@ -78,7 +18,7 @@ declare global {
             type: string;
             bbox?: BBox;
         }
-        
+
         interface Point extends Geometry {
             type: 'Point';
             coordinates: Position;
@@ -145,4 +85,4 @@ declare global {
 
 // This empty export is needed to make the file a module, 
 // which is required for 'declare global' to work correctly in some TS setups.
-export {};
+export { };

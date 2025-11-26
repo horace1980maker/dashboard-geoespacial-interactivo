@@ -45,14 +45,14 @@ export const FeatureInfoPanel: React.FC<FeatureInfoPanelProps> = ({ data, onClos
     const featureName = String(properties?.name || properties?.Name || properties?.NAME || `${t('featureId')} ${featureId}`);
 
     return (
-        <div className="absolute top-4 right-4 w-96 max-h-[calc(100%-2rem)] bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col animate-slide-in-right">
+        <div className="absolute top-4 right-4 w-96 max-h-[calc(100%-2rem)] bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col animate-slide-in-right z-[1000]">
             <header className="flex justify-between items-start p-3 bg-slate-50 border-b border-slate-200 flex-shrink-0">
                 <h3 className="text-xl font-bold text-brand-accent truncate" title={featureName}>{featureName}</h3>
                 <button onClick={onClose} aria-label="Close panel" className="p-1 rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors flex-shrink-0 ml-2">
                     <CloseIcon className="w-5 h-5" />
                 </button>
             </header>
-            
+
             <div className="p-4 overflow-y-auto">
                 <h4 className="text-sm font-semibold uppercase tracking-wider text-brand-base mb-2">{t('shapefileProperties')}</h4>
                 <div className="bg-slate-50 p-3 rounded-md space-y-2 text-sm font-mono">
@@ -64,7 +64,7 @@ export const FeatureInfoPanel: React.FC<FeatureInfoPanelProps> = ({ data, onClos
                             if (Array.isArray(value) && value.length === 0) {
                                 return null;
                             }
-                            
+
                             const renderedValue = renderPropertyValue(value);
 
                             return (

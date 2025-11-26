@@ -11,9 +11,9 @@ interface ChartComponentProps {
 const CustomTooltip: React.FC<any> = ({ active, payload, label, unit }) => {
     if (active && payload && payload.length) {
         return (
-            <div className="bg-gray-900/80 p-3 border border-gray-600 rounded-lg shadow-lg backdrop-blur-sm">
-                <p className="font-bold text-white text-base">{label}</p>
-                <p className="text-cyan-400 text-sm">{`${Intl.NumberFormat('en-US').format(payload[0].value)} ${unit}`}</p>
+            <div className="bg-white p-3 border border-slate-200 rounded-lg shadow-md">
+                <p className="font-bold text-slate-900 text-base">{label}</p>
+                <p className="text-brand-base text-sm">{`${Intl.NumberFormat('en-US').format(payload[0].value)} ${unit}`}</p>
             </div>
         );
     }
@@ -26,21 +26,21 @@ export const ChartComponent: React.FC<ChartComponentProps> = ({ data, dataKey, u
             <BarChart data={data} margin={{ top: 5, right: 20, left: 20, bottom: 5 }}>
                 <defs>
                     <linearGradient id="barGradient" x1="0" y1="0" x2="0" y2="1">
-                        <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.8}/>
-                        <stop offset="95%" stopColor="#0891b2" stopOpacity={0.2}/>
+                        <stop offset="5%" stopColor="#009EE2" stopOpacity={0.9}/>
+                        <stop offset="95%" stopColor="#4CC6FF" stopOpacity={0.15}/>
                     </linearGradient>
                 </defs>
-                <CartesianGrid strokeDasharray="3 3" stroke="#4a5568" strokeOpacity={0.5} />
-                <XAxis dataKey="name" stroke="#a0aec0" tick={{ fill: '#a0aec0', fontSize: 12 }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" strokeOpacity={0.9} />
+                <XAxis dataKey="name" stroke="#4b5563" tick={{ fill: '#4b5563', fontSize: 12 }} />
                 <YAxis 
-                    stroke="#a0aec0" 
-                    tick={{ fill: '#a0aec0', fontSize: 12 }}
+                    stroke="#4b5563" 
+                    tick={{ fill: '#4b5563', fontSize: 12 }}
                     tickFormatter={(value) => new Intl.NumberFormat('en-US', { notation: 'compact', compactDisplay: 'short' }).format(Number(value))}
                     width={60}
                 />
                 <Tooltip 
                     content={<CustomTooltip unit={unit} />} 
-                    cursor={{ fill: 'rgba(110, 231, 255, 0.1)' }}
+                    cursor={{ fill: 'rgba(0, 158, 226, 0.12)' }}
                     wrapperStyle={{ outline: 'none' }}
                 />
                 <Bar dataKey={dataKey} fill="url(#barGradient)" name={unit} radius={[4, 4, 0, 0]} />

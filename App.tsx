@@ -5,7 +5,7 @@ import { Sidebar } from './components/Sidebar';
 import { InfoPanel } from './components/InfoPanel';
 import { FOCUSED_COUNTRIES, DATASETS, LAYER_COLORS } from './constants';
 import type { DataSetId, Country, SelectedFeature, CustomLayer } from './types';
-import { analyzeCountryData, searchDocument } from './services/geminiService';
+import { analyzeCountryData, searchDocument } from './services/llmService';
 import { Header } from './components/Header';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
 import { LoadingSpinner } from './components/icons';
@@ -174,7 +174,7 @@ const AppContent: React.FC = () => {
     }, [selectedDatasetId, language]);
 
     return (
-        <div className="flex flex-col h-screen bg-gray-900 text-gray-200 font-sans">
+        <div className="flex flex-col h-screen bg-slate-50 text-slate-900 font-sans">
             <Header />
             <div className="flex flex-1 overflow-hidden">
                 <Sidebar

@@ -14,22 +14,22 @@ interface MapComponentProps {
 }
 
 const mapStyles: google.maps.MapTypeStyle[] = [
-  { elementType: "geometry", stylers: [{ color: "#242f3e" }] },
-  { elementType: "labels.text.stroke", stylers: [{ color: "#242f3e" }] },
-  { elementType: "labels.text.fill", stylers: [{ color: "#746855" }] },
-  { featureType: "administrative.locality", elementType: "labels.text.fill", stylers: [{ color: "#d59563" }] },
+  { elementType: "geometry", stylers: [{ color: "#001B73" }] },
+  { elementType: "labels.text.stroke", stylers: [{ color: "#001441" }] },
+  { elementType: "labels.text.fill", stylers: [{ color: "#A7C4FF" }] },
+  { featureType: "administrative.locality", elementType: "labels.text.fill", stylers: [{ color: "#4CC6FF" }] },
   { featureType: "poi", stylers: [{ visibility: "off" }] },
-  { featureType: "road", elementType: "geometry", stylers: [{ color: "#38414e" }] },
-  { featureType: "road", elementType: "geometry.stroke", stylers: [{ color: "#212a37" }] },
+  { featureType: "road", elementType: "geometry", stylers: [{ color: "#1231A3" }] },
+  { featureType: "road", elementType: "geometry.stroke", stylers: [{ color: "#021347" }] },
   { featureType: "road", elementType: "labels.icon", stylers: [{ visibility: "off" }] },
-  { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#9ca5b3" }] },
-  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#746855" }] },
-  { featureType: "road.highway", elementType: "geometry.stroke", stylers: [{ color: "#1f2835" }] },
-  { featureType: "road.highway", elementType: "labels.text.fill", stylers: [{ color: "#f3d19c" }] },
+  { featureType: "road", elementType: "labels.text.fill", stylers: [{ color: "#E5EDFF" }] },
+  { featureType: "road.highway", elementType: "geometry", stylers: [{ color: "#1231A3" }] },
+  { featureType: "road.highway", elementType: "geometry.stroke", stylers: [{ color: "#021347" }] },
+  { featureType: "road.highway", elementType: "labels.text.fill", stylers: [{ color: "#4CC6FF" }] },
   { featureType: "transit", stylers: [{ visibility: "off" }] },
-  { featureType: "water", elementType: "geometry", stylers: [{ color: "#17263c" }] },
-  { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#515c6d" }] },
-  { featureType: "water", elementType: "labels.text.stroke", stylers: [{ color: "#17263c" }] },
+  { featureType: "water", elementType: "geometry", stylers: [{ color: "#009EE2" }] },
+  { featureType: "water", elementType: "labels.text.fill", stylers: [{ color: "#E5EDFF" }] },
+  { featureType: "water", elementType: "labels.text.stroke", stylers: [{ color: "#005B94" }] },
 ];
 
 const createCountryHexagonMarkerContent = (scale: number, isSelected: boolean): HTMLElement => {
@@ -37,8 +37,8 @@ const createCountryHexagonMarkerContent = (scale: number, isSelected: boolean): 
     const width = finalScale * Math.sqrt(3);
     const height = finalScale * 2;
 
-    const fillColor = isSelected ? 'rgba(0, 255, 255, 0.9)' : 'rgba(255, 193, 7, 0.8)';
-    const strokeColor = isSelected ? '#ffffff' : '#b08000';
+    const fillColor = isSelected ? 'rgba(0, 158, 226, 0.95)' : 'rgba(0, 31, 137, 0.9)';
+    const strokeColor = isSelected ? '#4CC6FF' : '#009EE2';
     const strokeWeight = isSelected ? 2 : 1.5;
 
     const container = document.createElement('div');
@@ -151,9 +151,9 @@ export const MapComponent: React.FC<MapComponentProps> = ({
             return {
                 visible: countryISOs.has(iso),
                 fillOpacity: 0,
-                strokeColor: '#06b6d4',
-                strokeWeight: 1.5,
-                strokeOpacity: 0.7,
+                strokeColor: '#009EE2',
+                strokeWeight: 1.6,
+                strokeOpacity: 0.9,
             };
         });
 
@@ -306,5 +306,5 @@ export const MapComponent: React.FC<MapComponentProps> = ({
         });
     }, [customLayers, onFeatureSelect]);
 
-    return <div className="h-full w-full bg-gray-900" ref={mapDivRef}></div>;
+    return <div className="h-full w-full bg-brand-base" ref={mapDivRef}></div>;
 };

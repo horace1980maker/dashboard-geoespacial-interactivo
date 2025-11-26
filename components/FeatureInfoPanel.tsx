@@ -45,17 +45,17 @@ export const FeatureInfoPanel: React.FC<FeatureInfoPanelProps> = ({ data, onClos
     const featureName = String(properties?.name || properties?.Name || properties?.NAME || `${t('featureId')} ${featureId}`);
 
     return (
-        <div className="absolute top-4 right-4 w-96 max-h-[calc(100%-2rem)] bg-gray-900/70 backdrop-blur-md rounded-lg shadow-2xl border border-emerald-300/20 overflow-hidden flex flex-col animate-slide-in-right">
-            <header className="flex justify-between items-start p-3 bg-black/20 border-b border-emerald-300/10 flex-shrink-0">
-                <h3 className="text-xl font-bold text-white truncate" title={featureName}>{featureName}</h3>
-                <button onClick={onClose} aria-label="Close panel" className="p-1 rounded-full text-gray-400 hover:bg-gray-700 hover:text-white transition-colors flex-shrink-0 ml-2">
+        <div className="absolute top-4 right-4 w-96 max-h-[calc(100%-2rem)] bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden flex flex-col animate-slide-in-right">
+            <header className="flex justify-between items-start p-3 bg-slate-50 border-b border-slate-200 flex-shrink-0">
+                <h3 className="text-xl font-bold text-brand-accent truncate" title={featureName}>{featureName}</h3>
+                <button onClick={onClose} aria-label="Close panel" className="p-1 rounded-full text-slate-400 hover:bg-slate-100 hover:text-slate-700 transition-colors flex-shrink-0 ml-2">
                     <CloseIcon className="w-5 h-5" />
                 </button>
             </header>
             
             <div className="p-4 overflow-y-auto">
-                <h4 className="text-sm font-semibold uppercase tracking-wider text-emerald-400 mb-2">{t('shapefileProperties')}</h4>
-                <div className="bg-black/20 p-3 rounded-md space-y-2 text-sm font-mono">
+                <h4 className="text-sm font-semibold uppercase tracking-wider text-brand-base mb-2">{t('shapefileProperties')}</h4>
+                <div className="bg-slate-50 p-3 rounded-md space-y-2 text-sm font-mono">
                     {Object.keys(properties).length > 0 ? (
                         Object.entries(properties).map(([key, value]) => {
                             if (value === null || value === undefined || value === '') {
@@ -69,13 +69,13 @@ export const FeatureInfoPanel: React.FC<FeatureInfoPanelProps> = ({ data, onClos
 
                             return (
                                 <div key={key} className="grid grid-cols-10 gap-2 items-start">
-                                    <strong className="text-gray-400 truncate col-span-3" title={key}>{key}:</strong>
-                                    <div className="text-white whitespace-pre-wrap break-all col-span-7">{renderedValue}</div>
+                                    <strong className="text-slate-500 truncate col-span-3" title={key}>{key}:</strong>
+                                    <div className="text-slate-800 whitespace-pre-wrap break-all col-span-7">{renderedValue}</div>
                                 </div>
                             );
                         })
                     ) : (
-                        <p className="text-gray-500">{t('noProperties')}</p>
+                        <p className="text-slate-500">{t('noProperties')}</p>
                     )}
                 </div>
             </div>

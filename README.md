@@ -15,6 +15,30 @@ View your app in AI Studio: https://ai.studio/apps/drive/1YZXy9K7HTcoFH6P21NKHZs
 
 1. Install dependencies:
    `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
+2. Configure your LLM provider in `.env.local`:
+   
+   **For Gemini (default):**
+   ```
+   LLM_PROVIDER=gemini
+   GEMINI_API_KEY=your_gemini_api_key
+   ```
+   
+   **For OpenAI:**
+   ```
+   LLM_PROVIDER=openai
+   OPENAI_API_KEY=your_openai_api_key
+   # Optional: For custom base URL (e.g., Azure OpenAI)
+   OPENAI_BASE_URL=https://api.openai.com/v1
+   ```
+   
+   **For Anthropic:**
+   ```
+   LLM_PROVIDER=anthropic
+   ANTHROPIC_API_KEY=your_anthropic_api_key
+   # Optional: For custom base URL
+   ANTHROPIC_BASE_URL=https://api.anthropic.com/v1
+   ```
+   
+   **Note:** For backward compatibility, `API_KEY` can still be used with Gemini provider.
 3. Run the app:
    `npm run dev`

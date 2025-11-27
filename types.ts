@@ -40,3 +40,9 @@ export interface CustomLayer {
     isVisible: boolean;
     color: string;
 }
+
+export interface Organization {
+    id: string;
+    name: string;
+    description?: string;
+}

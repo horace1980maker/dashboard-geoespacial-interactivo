@@ -149,9 +149,9 @@ function getLLMProvider(): LLMProviderInterface {
             throw new Error(
                 `API key not set for provider "${provider}". ` +
                 `Please set the appropriate environment variable: ` +
-                `${provider === 'gemini' ? 'GEMINI_API_KEY or API_KEY' : 
-                  provider === 'openai' ? 'OPENAI_API_KEY' : 
-                  'ANTHROPIC_API_KEY'}`
+                `${provider === 'gemini' ? 'GEMINI_API_KEY or API_KEY' :
+                    provider === 'openai' ? 'OPENAI_API_KEY' :
+                        'ANTHROPIC_API_KEY'}`
             );
         }
 
@@ -160,7 +160,7 @@ function getLLMProvider(): LLMProviderInterface {
     return llmProvider;
 }
 
-const getErrorMessage = (language: Language) => language === 'es' 
+const getErrorMessage = (language: Language) => language === 'es'
     ? 'Se produjo un error al comunicarse con la IA. Verifique su clave de API y su conexión.'
     : 'An error occurred while communicating with the AI. Please check your API key and connection.';
 
@@ -171,28 +171,20 @@ export async function analyzeCountryData(
     unit: string,
     language: Language
 ): Promise<string> {
-    const prompt = `
-        Provide a brief, insightful, and easy-to-understand socio-economic analysis for ${countryName}, focusing on the following data point:
-        - Metric: ${datasetName}
-        - Value: ${Intl.NumberFormat('en-US').format(Number(dataValue))} ${unit}
+    // Simulate API delay
+    await new Promise(resolve => setTimeout(resolve, 1500));
 
-        Based on this single metric, explain what it might imply for the country's development, its people, and its standing in the region.
-        Keep the analysis concise, to one or two paragraphs. Do not use markdown formatting. Just return plain text.
-        Respond in ${language === 'es' ? 'Spanish' : 'English'}.
-    `;
+    // Dummy text for "Territorial Insight Cards"
+    const dummyAnalysis = `
+**Amenazas principales:** Deforestación acelerada por expansión agrícola y ganadería extensiva.
+**Servicios críticos:** Regulación hídrica y captura de carbono.
+**Medios de vida afectados:** Agricultura de subsistencia y turismo comunitario.
+**Conflictos presentes:** Disputas por tenencia de tierra en zonas limítrofes.
+**Opciones de SbN:** Restauración de riberas y sistemas agroforestales con cacao.
+**Por qué esta zona es estratégica:** Conecta dos grandes reservas de biosfera y es clave para el corredor biológico mesoamericano.
+    `.trim();
 
-    try {
-        const provider = getLLMProvider();
-        const response = await provider.generateText(prompt, {
-            temperature: 0.5,
-            topP: 0.95,
-        });
-
-        return response;
-    } catch (error) {
-        console.error("Error calling LLM API for analysis:", error);
-        throw new Error(getErrorMessage(language));
-    }
+    return dummyAnalysis;
 }
 
 export async function searchDocument(query: string, language: Language): Promise<string> {
@@ -218,10 +210,10 @@ export async function searchDocument(query: string, language: Language): Promise
         });
 
         const textResponse = response.trim();
-        
+
         // Final check to ensure the model follows instructions
         if (textResponse === "I couldn't find this information in your uploaded documents." && language === 'es') {
-             return "No pude encontrar esta información en los documentos cargados.";
+            return "No pude encontrar esta información en los documentos cargados.";
         }
 
         return textResponse;

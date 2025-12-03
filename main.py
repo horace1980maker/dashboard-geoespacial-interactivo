@@ -16,13 +16,8 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 app = FastAPI()
 
-# Load vectorstore
-try:
-    vectorstore = get_vectorstore()
-    print(f"✅ Vector store loaded successfully.")
-except Exception as e:
-    print(f"⚠️ Error loading vector store: {e}")
-    vectorstore = None
+# Global variable for lazy loading
+vectorstore = None
 
 class ChatRequest(BaseModel):
     query: str
@@ -36,8 +31,17 @@ class SummaryRequest(BaseModel):
 
 def retrieve_context(query: str, org_id: str, top_k: int = 5) -> list[str]:
     """Retrieve relevant chunks for the query and org_id."""
-    if not vectorstore:
-        return []
+    global vectorstore
+    
+    # Lazy load vectorstore
+    if vectorstore is None:
+        try:
+            print("⏳ Loading vector store...")
+            vectorstore = get_vectorstore()
+            print(f"✅ Vector store loaded successfully.")
+        except Exception as e:
+            print(f"⚠️ Error loading vector store: {e}")
+            return []
     
     try:
         # Search with metadata filter for org_id

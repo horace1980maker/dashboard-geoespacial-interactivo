@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import type { Country, DataSetId, Organization } from '../types';
 import { CloseIcon, SparklesIcon, LoadingSpinner, WarningIcon, ArrowLeftIcon } from './icons';
 import { useLanguage } from '../contexts/LanguageContext';
@@ -12,27 +12,26 @@ interface InfoPanelProps {
     isLoading: boolean;
     onAnalyze: () => void;
     onClose: () => void;
+    selectedOrg: Organization | null;
+    onOrgSelect: (org: Organization | null) => void;
 }
 
-export const InfoPanel: React.FC<InfoPanelProps> = ({ country, dataset, analysis, analysisError, isLoading, onAnalyze, onClose }) => {
+export const InfoPanel: React.FC<InfoPanelProps> = ({
+    country, dataset, analysis, analysisError, isLoading,
+    onAnalyze, onClose, selectedOrg, onOrgSelect
+}) => {
     const { t } = useLanguage();
-    const [selectedOrg, setSelectedOrg] = useState<Organization | null>(null);
     const dataValue = country.data[dataset.id];
-
-    // Reset selected org when country changes
-    React.useEffect(() => {
-        setSelectedOrg(null);
-    }, [country.id]);
 
     const organizations = COUNTRY_ORGANIZATIONS[country.id] || [];
 
     const handleOrgSelect = (org: Organization) => {
-        setSelectedOrg(org);
+        onOrgSelect(org);
         onAnalyze(); // Trigger analysis when org is selected
     };
 
     const handleBack = () => {
-        setSelectedOrg(null);
+        onOrgSelect(null);
     };
 
     return (
@@ -110,7 +109,10 @@ export const InfoPanel: React.FC<InfoPanelProps> = ({ country, dataset, analysis
                             )}
                             {analysis && !isLoading && (
                                 <div className="prose prose-sm prose-slate max-w-none">
-                                    <div className="whitespace-pre-wrap font-sans text-slate-700">{analysis}</div>
+                                    <div
+                                        className="font-sans text-slate-700"
+                                        dangerouslySetInnerHTML={{ __html: analysis }}
+                                    />
                                 </div>
                             )}
                         </div>

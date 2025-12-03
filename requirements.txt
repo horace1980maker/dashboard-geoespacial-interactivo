@@ -1,3 +1,11 @@
 fastapi
 uvicorn
 requests
+pymupdf
+tqdm
+python-dotenv
+langchain
+langchain-community
+langchain-huggingface
+sentence-transformers
+chromadb

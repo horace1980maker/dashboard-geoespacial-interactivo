@@ -4,7 +4,7 @@ import { MapComponent } from './components/MapComponent';
 import { Sidebar } from './components/Sidebar';
 import { InfoPanel } from './components/InfoPanel';
 import { FOCUSED_COUNTRIES, DATASETS, LAYER_COLORS } from './constants';
-import type { DataSetId, Country, SelectedFeature, CustomLayer } from './types';
+import type { DataSetId, Country, SelectedFeature, CustomLayer, Organization } from './types';
 import { analyzeCountryData, searchDocument } from './services/llmService';
 import { Header } from './components/Header';
 import { LanguageProvider, useLanguage } from './contexts/LanguageContext';
@@ -19,6 +19,7 @@ const AppContent: React.FC = () => {
     // Selection State
     const [selectedCountry, setSelectedCountry] = useState<Country | null>(null);
     const [selectedFeature, setSelectedFeature] = useState<SelectedFeature | null>(null);
+    const [selectedOrg, setSelectedOrg] = useState<Organization | null>(null);
 
     // Custom Layer State
     const [customLayers, setCustomLayers] = useState<CustomLayer[]>([]);
@@ -40,6 +41,7 @@ const AppContent: React.FC = () => {
         setSelectedCountry(null);
         setSelectedFeature(null);
         setIsSearchPanelOpen(false);
+        setSelectedOrg(null);
     }, []);
 
     const handleCountrySelect = useCallback((country: Country | null) => {
@@ -119,7 +121,8 @@ const AppContent: React.FC = () => {
                 dataset.name[language],
                 selectedCountry.data[selectedDatasetId]!,
                 dataset.unit[language],
-                language
+                language,
+                selectedOrg?.id // Pass selected org ID
             );
             setAnalysis(result);
         } catch (error) {
@@ -134,14 +137,32 @@ const AppContent: React.FC = () => {
     const handleSearchSubmit = async (query: string) => {
         if (!query.trim()) return;
 
-        closeAllPanels();
+        // Don't close all panels, we might want to keep context?
+        // But user flow usually implies opening search panel.
+        // If we close panels, we lose selectedOrg.
+        // So we should NOT close panels if we want to keep context.
+        // But the UI design has panels overlaying map.
+        // Let's keep selectedOrg if possible.
+        // closeAllPanels resets selectedOrg.
+        // So we should NOT call closeAllPanels here if we want to preserve org context.
+        // But SearchPanel might overlap InfoPanel.
+
+        // If we want "Ask the organization", we need the org.
+        // If we close panels, org is gone.
+        // So let's NOT close panels, but maybe hide them?
+        // Or just let SearchPanel open on top?
+        // Or refactor closeAllPanels to optionally keep org?
+
+        // For now, let's just NOT call closeAllPanels, but explicitly close others if needed.
+        // But wait, `closeAllPanels` is called in `onMapClick`.
+
         setIsSearching(true);
         setSearchError(null);
         setSearchResult(null);
         setIsSearchPanelOpen(true);
 
         try {
-            const result = await searchDocument(query, language);
+            const result = await searchDocument(query, language, selectedOrg?.id);
             setSearchResult(result);
         } catch (error) {
             console.error("Document search failed:", error);
@@ -178,6 +199,7 @@ const AppContent: React.FC = () => {
                     onRemoveLayer={handleRemoveLayer}
                     onSearchSubmit={handleSearchSubmit}
                     isSearching={isSearching}
+                    selectedOrgName={selectedOrg?.name} // Pass org name for context
                 />
                 <main className="flex-1 relative">
                     <div className="absolute inset-0">
@@ -199,6 +221,8 @@ const AppContent: React.FC = () => {
                                 isLoading={isAnalyzing}
                                 onAnalyze={handleAskAI}
                                 onClose={closeAllPanels}
+                                selectedOrg={selectedOrg}
+                                onOrgSelect={setSelectedOrg}
                             />
                         )}
                         {selectedFeature && (

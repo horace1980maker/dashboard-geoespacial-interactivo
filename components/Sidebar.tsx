@@ -16,13 +16,14 @@ interface SidebarProps {
     onRemoveLayer: (layerId: string) => void;
     onSearchSubmit: (query: string) => void;
     isSearching: boolean;
+    selectedOrgName?: string;
 }
 
-export const Sidebar: React.FC<SidebarProps> = ({ 
+export const Sidebar: React.FC<SidebarProps> = ({
     datasets, selectedDatasetId, onDatasetChange,
     onFileUpload, isUploading, uploadError,
     customLayers, onToggleLayerVisibility, onRemoveLayer,
-    onSearchSubmit, isSearching
+    onSearchSubmit, isSearching, selectedOrgName
 }) => {
     const { language, t } = useLanguage();
     const [searchQuery, setSearchQuery] = useState('');
@@ -34,7 +35,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
         }
         event.target.value = '';
     };
-    
+
     const handleSearchClick = () => {
         if (searchQuery.trim()) {
             onSearchSubmit(searchQuery);
@@ -51,8 +52,8 @@ export const Sidebar: React.FC<SidebarProps> = ({
                 <div className="space-y-2">
                     {datasets.map((dataset) => (
                         <div key={dataset.id}
-                             className={`p-3 rounded-xl cursor-pointer transition-all duration-200 ${selectedDatasetId === dataset.id ? 'bg-gradient-to-r from-brand-accent to-brand-base shadow-lg' : 'bg-brand-accent/40 hover:bg-brand-accent/60'}`}
-                             onClick={() => onDatasetChange(dataset.id)}>
+                            className={`p-3 rounded-xl cursor-pointer transition-all duration-200 ${selectedDatasetId === dataset.id ? 'bg-gradient-to-r from-brand-accent to-brand-base shadow-lg' : 'bg-brand-accent/40 hover:bg-brand-accent/60'}`}
+                            onClick={() => onDatasetChange(dataset.id)}>
                             <label className="flex items-center cursor-pointer">
                                 <input
                                     type="radio"
@@ -71,29 +72,33 @@ export const Sidebar: React.FC<SidebarProps> = ({
                     ))}
                 </div>
             </div>
-            
+
             <div className="border-t border-brand-base/40 pt-6">
                 <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
                     <SearchIcon className="w-5 h-5 mr-2" />
-                    {t('askTheDocument')}
+                    {selectedOrgName ? `Preguntar a ${selectedOrgName}` : t('askTheDocument')}
                 </h2>
                 <div className="bg-brand-accent/40 p-4 rounded-xl space-y-3">
-                     <p className="text-sm text-sky-100/90">{t('askTheDocumentDescription')}</p>
-                     <textarea
+                    <p className="text-sm text-sky-100/90">
+                        {selectedOrgName
+                            ? `Haz preguntas sobre los documentos de ${selectedOrgName}.`
+                            : t('askTheDocumentDescription')}
+                    </p>
+                    <textarea
                         value={searchQuery}
                         onChange={(e) => setSearchQuery(e.target.value)}
-                        placeholder={t('askTheDocumentPlaceholder')}
-                        className="w-full h-24 p-2 bg-brand-accent/20 rounded-md text-white placeholder:text-sky-100/70 focus:ring-2 focus:ring-brand-base focus:outline-none transition"
+                        placeholder={selectedOrgName ? `¿Qué hace ${selectedOrgName}?` : t('askTheDocumentPlaceholder')}
+                        className="w-full h-24 p-2 bg-white text-slate-900 rounded-md placeholder:text-slate-400 focus:ring-2 focus:ring-brand-base focus:outline-none transition"
                         disabled={isSearching}
-                     />
-                     <button
+                    />
+                    <button
                         onClick={handleSearchClick}
                         disabled={isSearching || !searchQuery.trim()}
                         className="w-full flex items-center justify-center px-4 py-2 bg-brand-base text-white font-bold rounded-full hover:bg-brand-base/90 transition-all duration-200 disabled:bg-brand-accent/40 disabled:cursor-not-allowed"
-                     >
+                    >
                         {isSearching ? <LoadingSpinner className="w-5 h-5 mr-2" /> : <SearchIcon className="w-5 h-5 mr-2" />}
                         {isSearching ? t('searchingDocument') : t('searchButton')}
-                     </button>
+                    </button>
                 </div>
             </div>
 
@@ -113,10 +118,10 @@ export const Sidebar: React.FC<SidebarProps> = ({
                             disabled={isUploading}
                         />
                         {isUploading ? (
-                             <>
+                            <>
                                 <LoadingSpinner className="w-5 h-5 mr-2" />
                                 {t('uploading')}
-                             </>
+                            </>
                         ) : t('selectFile')}
                     </label>
                     {uploadError && (
@@ -129,7 +134,7 @@ export const Sidebar: React.FC<SidebarProps> = ({
             </div>
 
             {customLayers.length > 0 && (
-                 <div className="border-t border-brand-base/40 pt-6">
+                <div className="border-t border-brand-base/40 pt-6">
                     <h2 className="text-xl font-semibold text-white mb-4 flex items-center">
                         <LayerIcon className="w-5 h-5 mr-2" />
                         {t('uploadedLayers')}

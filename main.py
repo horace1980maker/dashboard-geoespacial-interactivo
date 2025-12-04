@@ -167,9 +167,13 @@ async def serve_react_app(full_path: str):
     
     file_path = f"dist/{full_path}"
     if os.path.exists(file_path) and os.path.isfile(file_path):
+        # Cache static assets for 1 year
+        if file_path.endswith(('.js', '.css', '.woff', '.woff2', '.ttf', '.eot')):
+            return FileResponse(file_path, headers={"Cache-Control": "public, max-age=31536000, immutable"})
         return FileResponse(file_path)
     
-    return FileResponse("dist/index.html")
+    # Never cache HTML - always revalidate
+    return FileResponse("dist/index.html", headers={"Cache-Control": "no-cache, no-store, must-revalidate"})
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=int(os.environ.get("PORT", 10000)))
